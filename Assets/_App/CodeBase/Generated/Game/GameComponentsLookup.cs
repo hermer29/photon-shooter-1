@@ -8,15 +8,33 @@
 //------------------------------------------------------------------------------
 public static class GameComponentsLookup {
 
-    public const int Input = 0;
+    public const int Controllable = 0;
+    public const int LocalPlayer = 1;
+    public const int NetworkId = 2;
+    public const int NetworkOwner = 3;
+    public const int PlayerLink = 4;
+    public const int Position = 5;
+    public const int Rotation = 6;
 
-    public const int TotalComponents = 1;
+    public const int TotalComponents = 7;
 
     public static readonly string[] componentNames = {
-        "Input"
+        "Controllable",
+        "LocalPlayer",
+        "NetworkId",
+        "NetworkOwner",
+        "PlayerLink",
+        "Position",
+        "Rotation"
     };
 
     public static readonly System.Type[] componentTypes = {
-        typeof(GameplayLayer.Input.Components.InputComponent)
+        typeof(GameplayLayer.Game.ControllableComponent),
+        typeof(GameplayLayer.Game.Network.Components.LocalPlayerComponent),
+        typeof(GameplayLayer.Game.Network.Components.NetworkIdComponent),
+        typeof(GameplayLayer.Game.Network.Components.NetworkOwnerComponent),
+        typeof(GameplayLayer.Game.PlayerLinkComponent),
+        typeof(GameplayLayer.Game.PositionComponent),
+        typeof(GameplayLayer.Game.RotationComponent)
     };
 }

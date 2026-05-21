@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Photon.Pun;
 using Photon.Realtime;
@@ -6,7 +7,7 @@ using Zenject;
 
 namespace ConnectionLayer
 {
-    public class Connection : IInitializable, IConnectionCallbacks
+    public class Connection : IInitializable, IConnectionCallbacks, IDisposable
     {
         public bool IsConnected => PhotonNetwork.IsConnected;
         
@@ -45,6 +46,11 @@ namespace ConnectionLayer
 
         public void OnCustomAuthenticationFailed(string debugMessage)
         {
+        }
+
+        public void Dispose()
+        {
+            PhotonNetwork.RemoveCallbackTarget(this);
         }
     }
 }

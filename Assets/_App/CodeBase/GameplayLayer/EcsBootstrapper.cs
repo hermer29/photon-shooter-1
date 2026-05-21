@@ -1,24 +1,37 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Entitas;
+using GameplayLayer.Game._Features;
+using GameplayLayer.Services;
 using SomeMultiplayerProject.Input;
 using Zenject;
 
 namespace GameplayLayer
 {
-    public class EcsBootstrapper : ITickable
+    public class EcsBootstrapper : ITickable, IDisposable
     {
-        private Systems systems;
+        private readonly Contexts _contexts;
+        private readonly PlayerSpawnService _playerSpawnService;
+        private readonly GameFeature _gameFeature;
 
         private bool _isBegun;
         
+        private Systems _systems;
+
+        public EcsBootstrapper(Contexts contexts, PlayerSpawnService playerSpawnService, GameFeature gameFeature)
+        {
+            _contexts = contexts;
+            _playerSpawnService = playerSpawnService;
+            _gameFeature = gameFeature;
+        }
+        
         public void Begin(CancellationToken token)
         {
-            systems = new Systems();
-            systems.Add(new InputSystem());
+            _systems = new Systems();
+            _systems.Add(new InputSystem());
             
-            
-            
-            systems.Initialize();
+            _systems.Initialize();
+            _gameFeature.Initialize();
             _isBegun = true;
         }
         
@@ -27,7 +40,14 @@ namespace GameplayLayer
             if (!_isBegun)
                 return;
             
-            systems.Execute();
+            _systems.Execute();
+            _gameFeature.Execute();
+        }
+
+        public void Dispose()
+        {
+            _systems.Cleanup();
+            _gameFeature.Cleanup();
         }
     }
 }
